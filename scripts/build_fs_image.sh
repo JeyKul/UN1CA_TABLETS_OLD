@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# CMD_HELP Builds the finished system.img... if already at that point.
+# CMD_HELP //
 
 set -eu
 
