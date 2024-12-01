@@ -32,14 +32,38 @@ TOOLS_DIR="$OUT_DIR/tools/bin"
 
 PATH="$TOOLS_DIR:$PATH"
 
-run_cmd()
+unica()
 {
     local CMD=$1
     local CMDS
     CMDS="$(find "scripts" -mindepth 1 -maxdepth 1 -type f -printf '%f\n' | sed "s/.sh//g")"
 
+    # Define colors
+    local YELLOW="\033[1;33m"
+    local CYAN="\033[1;36m"   # Changed from light blue to cyan
+    local RESET_COLOR="\033[0m" # To reset color
+
     if [ -z "$CMD" ] || [ "$CMD" = "-h" ]; then
-        echo -e "Available cmds:\n$CMDS"
+        echo -e "Available cmds:"
+
+        # Loop through each script and extract the help lines
+        for script in "scripts"/*.sh; do
+            CMD_NAME=$(basename "$script" .sh)
+            
+            # Extract all lines that start with # CMD_HELP
+            HELP_LINES=$(grep "^# CMD_HELP" "$script" | sed 's/^# CMD_HELP[[:space:]]*//')
+
+            if [ -n "$HELP_LINES" ]; then
+                # Print the command name in yellow
+                echo -e "${YELLOW}$CMD_NAME${RESET_COLOR}:"
+
+                # Print the help lines in cyan
+                echo -e "${CYAN}$HELP_LINES${RESET_COLOR}"
+                echo ""  # Adds an empty line between commands for better readability
+            else
+                echo -e "${YELLOW}$CMD_NAME${RESET_COLOR} - No help available"
+            fi
+        done
         return 1
     elif ! echo "$CMDS" | grep -q -w "$CMD"; then
         echo "\"$CMD\" is not valid."
@@ -50,31 +74,52 @@ run_cmd()
         bash -e "$SRC_DIR/scripts/$CMD.sh" "$@"
     fi
 }
+
 # ]
 
-TARGETS="$(ls "$SRC_DIR/target")"
+TARGETS=($(ls "$SRC_DIR/target"))
 
-if [ "$#" != 1 ]; then
+if [ "$#" -ne 1 ]; then
     echo "Usage: source buildenv.sh <target>"
-    echo -e "Available devices:\n$TARGETS"
-    return 1
-elif ! echo "$TARGETS" | grep -q -w "$1"; then
-    echo "\"$1\" is not valid target."
-    echo -e "Available devices:\n$TARGETS"
-    return 1
-else
-    mkdir -p "$OUT_DIR"
-    run_cmd build_dependencies || return 1
-    [ -f "$OUT_DIR/config.sh" ] && unset $(sed "/Automatically/d" "$OUT_DIR/config.sh" | cut -d= -f1)
-    bash "$SRC_DIR/scripts/internal/gen_config_file.sh" "$1" || return 1
-    source "$OUT_DIR/config.sh"
+    echo "No target specified. Please choose from the available devices below:"
 
-    echo "=============================="
-    sed "/Automatically/d" "$OUT_DIR/config.sh"
-    echo "=============================="
+    select TARGET in "${TARGETS[@]}"; do
+        if [ -n "$TARGET" ]; then
+            echo "You selected: $TARGET"
+            export SELECTED_TARGET="$TARGET"
+            break
+        else
+            echo "Invalid selection. Please try again."
+        fi
+    done
+
+    if [ -z "$SELECTED_TARGET" ]; then
+        echo "No valid target selected. Exiting."
+        return 1
+    fi
+else
+    if ! printf "%s\n" "${TARGETS[@]}" | grep -q -w "$1"; then
+        echo "\"$1\" is not a valid target."
+        echo "Available devices:"
+        printf "%s\n" "${TARGETS[@]}"
+        return 1
+    fi
+    SELECTED_TARGET="$1"
 fi
 
-unset TARGETS
-set +o allexport
+mkdir -p "$OUT_DIR"
+unica build_dependencies || return 1
+
+if [ -f "$OUT_DIR/config.sh" ]; then
+    unset $(sed "/Automatically/d" "$OUT_DIR/config.sh" | cut -d= -f1)
+fi
+
+bash "$SRC_DIR/scripts/internal/gen_config_file.sh" "$SELECTED_TARGET" || return 1
+source "$OUT_DIR/config.sh"
+
+echo "=============================="
+sed "/Automatically/d" "$OUT_DIR/config.sh"
+echo "type "unica -h" for help"
+
 
 return 0
