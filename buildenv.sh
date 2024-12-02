@@ -46,6 +46,28 @@ else
   sudo apt install -y "${MISSING_PACKAGES[@]}"
 fi
 
+echo "Checking for missing Git submodules..."
+
+if [ -f .gitmodules ]; then
+  UNINITIALIZED_SUBMODULES=$(git submodule status | grep '^-' || true)
+  
+  if [ -n "$UNINITIALIZED_SUBMODULES" ]; then
+    echo "The following submodules are missing or uninitialized:"
+    echo "$UNINITIALIZED_SUBMODULES"
+    echo "Initializing and cloning submodules..."
+    git submodule update --init --recursive
+    if [ $? -eq 0 ]; then
+      echo "Submodules initialized and cloned successfully."
+    else
+      echo "Failed to clone submodules. Please check your repository configuration."
+      exit 1
+    fi
+  else
+    echo "All submodules are already initialized."
+  fi
+else
+  echo "No submodules found in this repository."
+fi
 
 # [
 SRC_DIR="$(git rev-parse --show-toplevel)"
