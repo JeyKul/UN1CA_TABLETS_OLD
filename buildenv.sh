@@ -20,6 +20,33 @@
 
 set -o allexport
 
+PACKAGES=(
+  libbrotli-dev liblz4-dev libzstd-dev protobuf-compiler libgtest-dev
+  ffmpeg webp zipalign clang build-essential cmake openjdk-17-jdk
+  libncurses-dev bison flex libssl-dev libelf-dev python3
+  python-is-python3 cpio attr zip libprotobuf-dev make
+  libpcre2-dev ccache npm
+)
+
+echo "Checking dependencies..."
+
+MISSING_PACKAGES=()
+for PACKAGE in "${PACKAGES[@]}"; do
+  if ! dpkg -s "$PACKAGE" >/dev/null 2>&1; then
+    MISSING_PACKAGES+=("$PACKAGE")
+  fi
+done
+
+if [ ${#MISSING_PACKAGES[@]} -eq 0 ]; then
+  echo "All dependencies are already installed."
+else
+  echo "The following packages are missing: ${MISSING_PACKAGES[*]}"
+  echo "Attempting to install missing packages..."
+  sudo apt update
+  sudo apt install -y "${MISSING_PACKAGES[@]}"
+fi
+
+
 # [
 SRC_DIR="$(git rev-parse --show-toplevel)"
 OUT_DIR="$SRC_DIR/out"
