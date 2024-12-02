@@ -133,7 +133,7 @@ GEN_CONFIG_FILE()
         echo "TARGET_SSRM_CONFIG_NAME=\"${TARGET_SSRM_CONFIG_NAME:?}\""
         echo "SOURCE_SUPPORT_CUTOUT_PROTECTION=\"${SOURCE_SUPPORT_CUTOUT_PROTECTION:=false}\""
         echo "TARGET_SUPPORT_CUTOUT_PROTECTION=\"${TARGET_SUPPORT_CUTOUT_PROTECTION:=false}\""
-    } > "$OUT_DIR/config.sh" > /dev/null 2>&1
+    } > "$OUT_DIR/config.sh"
 }
 
 source "$SRC_DIR/target/$1/config.sh"
