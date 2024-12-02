@@ -445,14 +445,14 @@ while read -r i; do
 
     echo "Building $PARTITION.img"
     bash "$SRC_DIR/scripts/build_fs_image.sh" "$TARGET_OS_FILE_SYSTEM+sparse" "$WORK_DIR/$PARTITION" \
-        "$WORK_DIR/configs/file_context-$PARTITION" "$WORK_DIR/configs/fs_config-$PARTITION" > /dev/null 2>&1
+        "$WORK_DIR/configs/file_context-$PARTITION" "$WORK_DIR/configs/fs_config-$PARTITION"
     mv "$WORK_DIR/$PARTITION.img" "$TMP_DIR/$PARTITION.img"
 done <<< "$(find "$WORK_DIR" -mindepth 1 -maxdepth 1 -type d)"
 
 echo "Building super_empty.img"
 [ -f "$TMP_DIR/super_empty.img" ] && rm -f "$TMP_DIR/super_empty.img"
 CMD="lpmake $(GENERATE_LPMAKE_OPT)"
-$CMD &> /dev/null
+$CMD
 
 echo "Generating dynamic_partitions_op_list"
 GENERATE_OP_LIST
@@ -470,7 +470,7 @@ while read -r i; do
     fi
 
     echo "Converting $PARTITION.img to $PARTITION.new.dat"
-    img2sdat -o "$TMP_DIR" "$i" > /dev/null 2>&1 \
+    img2sdat -o "$TMP_DIR" "$i"\
         && rm "$i"
     echo "Compressing $PARTITION.new.dat"
     brotli --quality=6 --output="$TMP_DIR/$PARTITION.new.dat.br" "$TMP_DIR/$PARTITION.new.dat" \
@@ -492,7 +492,7 @@ GENERATE_BUILD_INFO
 
 echo "Creating zip"
 [ -f "$OUT_DIR/rom.zip" ] && rm -f "$OUT_DIR/rom.zip"
-cd "$TMP_DIR" ; zip -rq ../rom.zip ./* ; cd - &> /dev/null
+cd "$TMP_DIR" ; zip -rq ../rom.zip ./* ; cd -
 
 echo "Signing zip"
 [ -f "$OUT_DIR/$FILE_NAME-sign.zip" ] && rm -f "$OUT_DIR/$FILE_NAME-sign.zip"
