@@ -81,50 +81,39 @@ REMOVE_FROM_WORK_DIR()
 MODEL=$(echo -n "$TARGET_FIRMWARE" | cut -d "/" -f 1)
 REGION=$(echo -n "$TARGET_FIRMWARE" | cut -d "/" -f 2)
 
-#REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib/android.hardware.security.keymint-V2-ndk.so"
-#REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib/android.hardware.security.secureclock-V1-ndk.so"
-#REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib/libcallaudio.so"
-#REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib/libdk_native_keymint.so"
-#REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib/vendor.samsung.hardware.keymint-V2-ndk.so"
-#REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib64/android.hardware.security.keymint-V2-ndk.so"
-#REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib64/libcallaudio.so"
-#REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib64/libdk_native_keymint.so"
-#REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib64/libsecaudiomonomix.so"
-#REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib64/vendor.samsung.hardware.keymint-V2-ndk.so"
-#if ! grep -q "cameralightsensor" "$WORK_DIR/configs/file_context-system"; then
-#   {
-#       echo "/system/etc/permissions/privapp-permissions-com\.samsung\.adaptivebrightnessgo\.cameralightsensor\.xml u:object_r:system_file:s0"
-#       echo "/system/etc/sysconfig/preinstalled-packages-com\.qualcomm\.qti\.services\.secureui\.xml u:object_r:system_file:s0"
-#       echo "/system/lib/android\.hardware\.keymaster@3\.0\.so u:object_r:system_lib_file:s0"
-#       echo "/system/lib/android\.hardware\.keymaster@4\.0\.so u:object_r:system_lib_file:s0"
-#       echo "/system/lib/android\.hardware\.keymaster@4\.1\.so u:object_r:system_lib_file:s0"
-#       echo "/system/lib/libdk_native_keymaster\.so u:object_r:system_lib_file:s0"
-#       echo "/system/lib/libkeymaster4_1support\.so u:object_r:system_lib_file:s0"
-#       echo "/system/lib/libkeymaster4support\.so u:object_r:system_lib_file:s0"
-#       echo "/system/lib64/libdk_native_keymaster\.so u:object_r:system_lib_file:s0"
-#       echo "/system/priv-app/CameraLightSensor u:object_r:system_file:s0"
-#       echo "/system/priv-app/CameraLightSensor/CameraLightSensor\.apk u:object_r:system_file:s0"
-#       echo "/system/system_ext/app/com\.qualcomm\.qti\.services\.secureui u:object_r:system_file:s0"
-#       echo "/system/system_ext/app/com\.qualcomm\.qti\.services\.secureui/com\.qualcomm\.qti\.services\.secureui\.apk u:object_r:system_file:s0"
-#   } >> "$WORK_DIR/configs/file_context-system"
-#fi
-#if ! grep -q "cameralightsensor" "$WORK_DIR/configs/fs_config-system"; then
-#   {
-#       echo "system/etc/permissions/privapp-permissions-com.samsung.adaptivebrightnessgo.cameralightsensor.xml 0 0 644 capabilities=0x0"
-#       echo "system/etc/sysconfig/preinstalled-packages-com.qualcomm.qti.services.secureui.xml 0 0 644 capabilities=0x0"
-#       echo "system/lib/android.hardware.keymaster@3.0.so 0 0 644 capabilities=0x0"
-#       echo "system/lib/android.hardware.keymaster@4.0.so 0 0 644 capabilities=0x0"
-#       echo "system/lib/android.hardware.keymaster@4.1.so 0 0 644 capabilities=0x0"
-#       echo "system/lib/libdk_native_keymaster.so 0 0 644 capabilities=0x0"
-#       echo "system/lib/libkeymaster4_1support.so 0 0 644 capabilities=0x0"
-#       echo "system/lib/libkeymaster4support.so 0 0 644 capabilities=0x0"
-#       echo "system/lib64/libdk_native_keymaster.so 0 0 644 capabilities=0x0"
-#       echo "system/priv-app/CameraLightSensor 0 0 755 capabilities=0x0"
-#       echo "system/priv-app/CameraLightSensor/CameraLightSensor.apk 0 0 644 capabilities=0x0"
-#       echo "system/system_ext/app/com.qualcomm.qti.services.secureui 0 0 755 capabilities=0x0"
-#       echo "system/system_ext/app/com.qualcomm.qti.services.secureui/com.qualcomm.qti.services.secureui.apk 0 0 644 capabilities=0x0"
-#   } >> "$WORK_DIR/configs/fs_config-system"
-#fi
+REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib/android.hardware.security.keymint-V2-ndk.so"
+REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib/android.hardware.security.secureclock-V1-ndk.so"
+REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib/libcallaudio.so"
+REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib/libdk_native_keymint.so"
+REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib/vendor.samsung.hardware.keymint-V2-ndk.so"
+REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib64/android.hardware.security.keymint-V2-ndk.so"
+REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib64/libcallaudio.so"
+REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib64/libdk_native_keymint.so"
+REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib64/libsecaudiomonomix.so"
+REMOVE_FROM_WORK_DIR "$WORK_DIR/system/system/lib64/vendor.samsung.hardware.keymint-V2-ndk.so"
+
+if ! grep -q "cameralightsensor" "$WORK_DIR/configs/file_context-system"; then
+   {
+       echo "/system/lib/android\.hardware\.keymaster@3\.0\.so u:object_r:system_lib_file:s0"
+       echo "/system/lib/android\.hardware\.keymaster@4\.0\.so u:object_r:system_lib_file:s0"
+       echo "/system/lib/android\.hardware\.keymaster@4\.1\.so u:object_r:system_lib_file:s0"
+       echo "/system/lib/libdk_native_keymaster\.so u:object_r:system_lib_file:s0"
+       echo "/system/lib/libkeymaster4_1support\.so u:object_r:system_lib_file:s0"
+       echo "/system/lib/libkeymaster4support\.so u:object_r:system_lib_file:s0"
+       echo "/system/lib64/libdk_native_keymaster\.so u:object_r:system_lib_file:s0"
+   } >> "$WORK_DIR/configs/file_context-system"
+fi
+if ! grep -q "cameralightsensor" "$WORK_DIR/configs/fs_config-system"; then
+   {
+       echo "system/lib/android.hardware.keymaster@3.0.so 0 0 644 capabilities=0x0"
+       echo "system/lib/android.hardware.keymaster@4.0.so 0 0 644 capabilities=0x0"
+       echo "system/lib/android.hardware.keymaster@4.1.so 0 0 644 capabilities=0x0"
+       echo "system/lib/libdk_native_keymaster.so 0 0 644 capabilities=0x0"
+       echo "system/lib/libkeymaster4_1support.so 0 0 644 capabilities=0x0"
+       echo "system/lib/libkeymaster4support.so 0 0 644 capabilities=0x0"
+       echo "system/lib64/libdk_native_keymaster.so 0 0 644 capabilities=0x0"
+   } >> "$WORK_DIR/configs/fs_config-system"
+fi
 
 echo "Fix Google Assistant"
 rm -rf "$WORK_DIR/product/priv-app/HotwordEnrollmentOKGoogleEx4HEXAGON"
