@@ -69,6 +69,19 @@ else
   echo "No submodules found in this repository."
 fi
 
+#create venv if not exist
+if [ ! -f "venv/bin/activate" ]; then
+    echo "Virtual environment not found. Creating a new one..."
+    python3 -m venv venv
+else
+    echo "Virtual environment already exists."
+fi
+
+source venv/bin/activate
+
+pip3 install git+https://github.com/ananjaser1211/samloader.git &> /dev/null
+
+
 # [
 SRC_DIR="$(git rev-parse --show-toplevel)"
 OUT_DIR="$SRC_DIR/out"
