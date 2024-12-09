@@ -93,7 +93,7 @@ REGION=$(echo -n "$TARGET_FIRMWARE" | cut -d "/" -f 2)
 
 if ! grep -q "Camera End" "$WORK_DIR/vendor/ueventd.rc"; then
     echo -e "\n" >> "$WORK_DIR/vendor/ueventd.rc"
-    cat "$SRC_DIR/target/r8q/patches/camera/ueventd" >> "$WORK_DIR/vendor/ueventd.rc"
+    cat "$SRC_DIR/target/gts7xlwifi/patches/camera/ueventd" >> "$WORK_DIR/vendor/ueventd.rc"
 fi
 
 # Fix system camera libs
@@ -177,15 +177,11 @@ system/lib64/libPortraitDistortionCorrectionCali.arcsoft.so
 system/lib64/libUltraWideDistortionCorrection.camera.samsung.so
 system/lib64/libWideDistortionCorrection.camera.samsung.so
 system/lib64/libhigh_dynamic_range.arcsoft.so
-system/lib64/libhigh_res.arcsoft.so
 system/lib64/libhumantracking_util.camera.samsung.so
 system/lib64/libhumantracking.arcsoft.so
 system/lib64/liblow_light_hdr.arcsoft.so
 system/lib64/libsaiv_HprFace_cmh_support_jni.camera.samsung.so
-system/lib64/libsuperresolution.arcsoft.so
-system/lib64/libsuperresolution_wrapper_v2.camera.samsung.so
 system/lib64/libtensorflowLite.dynamic_viewing.camera.samsung.so
-system/lib64/libtensorflowlite_jni_r2.6.so
 "
 for blob in $BLOBS_LIST
 do
